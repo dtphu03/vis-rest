@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Answer;
-import vis.restsocial.service.AnswerService;
+import vis.restsocial.service.AnswerRepo;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class AnswerController {
     @Autowired
-    AnswerService answerService;
+    AnswerRepo answerRepo;
 
     @RequestMapping(value = "/answer", method = RequestMethod.GET)
     public ResponseEntity<List<Answer>> listAllAnswer() {
-        List<Answer> listAnswers = answerService.findAll();
+        List<Answer> listAnswers = answerRepo.findAll();
         if (listAnswers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -28,12 +28,12 @@ public class AnswerController {
 
     @RequestMapping(value = "/answer/", method = RequestMethod.POST)
     public Answer saveAnswer(Answer answer){
-        return answerService.save(answer);
+        return answerRepo.save(answer);
     }
 
     @RequestMapping(value = "/answer/", method = RequestMethod.PUT)
     public ResponseEntity<Answer> updateAnswer (@PathVariable(value = "id") Long answerId, @RequestBody Answer answerForm){
-        Answer answer = answerService.getOne(answerId);
+        Answer answer = answerRepo.getOne(answerId);
         if (answer == null){
             return ResponseEntity.notFound().build();
         }
@@ -43,17 +43,17 @@ public class AnswerController {
 
         answer.setNum_like(answerForm.getNum_like());
 
-        Answer updateAnswer = answerService.save(answer);
+        Answer updateAnswer = answerRepo.save(answer);
         return ResponseEntity.ok(updateAnswer);
     }
 
     @RequestMapping(value = "/answer/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Answer> deleteAnswer(@PathVariable(value = "id") Long id){
-        Answer answer = answerService.getOne(id);
+        Answer answer = answerRepo.getOne(id);
         if(answer == null){
             return ResponseEntity.notFound().build();
         }
-        answerService.delete(answer);
+        answerRepo.delete(answer);
         return ResponseEntity.ok().build();
     }
 }

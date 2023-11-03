@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Topic;
-import vis.restsocial.service.TopicService;
+import vis.restsocial.service.TopicRepo;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import java.util.List;
 public class TopicController {
 
     @Autowired
-    TopicService topicService;
+    TopicRepo topicRepo;
 
     @RequestMapping(value = "/topic", method = RequestMethod.GET)
     public ResponseEntity<List<Topic>> listAllTopic() {
-        List<Topic> listTopics = topicService.findAll();
+        List<Topic> listTopics = topicRepo.findAll();
         if (listTopics.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -29,28 +29,28 @@ public class TopicController {
 
     @RequestMapping(value = "/topic/", method = RequestMethod.POST)
     public Topic saveTopic(Topic topic){
-        return topicService.save(topic);
+        return topicRepo.save(topic);
     }
 
     @RequestMapping(value = "/topic/", method = RequestMethod.PUT)
     public ResponseEntity<Topic> updateTopic (@PathVariable(value = "id") Long topicId, @RequestBody Topic topicForm){
-        Topic topic = topicService.getOne(topicId);
+        Topic topic = topicRepo.getOne(topicId);
         if (topic == null){
             return ResponseEntity.notFound().build();
         }
         topic.setName(topicForm.getName());
 
-        Topic updateTopic = topicService.save(topic);
+        Topic updateTopic = topicRepo.save(topic);
         return ResponseEntity.ok(updateTopic);
     }
 
     @RequestMapping(value = "/topic/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Topic> deleteTopic(@PathVariable(value = "id") Long id){
-        Topic topic = topicService.getOne(id);
+        Topic topic = topicRepo.getOne(id);
         if(topic == null){
             return ResponseEntity.notFound().build();
         }
-        topicService.delete(topic);
+        topicRepo.delete(topic);
         return ResponseEntity.ok().build();
     }
 }

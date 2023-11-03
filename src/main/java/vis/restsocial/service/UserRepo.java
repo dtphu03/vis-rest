@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vis.restsocial.model.User;
 
 @Repository
-public interface UserService  extends JpaRepository<User, Long > {
+public interface UserRepo extends JpaRepository<User, Long > {
 }

@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Question;
-import vis.restsocial.service.QuestionService;
+import vis.restsocial.service.QuestionRepo;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class QuestionController {
     @Autowired
-    QuestionService questionService;
+    QuestionRepo questionRepo;
 
     @RequestMapping(value = "/question", method = RequestMethod.GET)
     public ResponseEntity<List<Question>> listAllQuestion() {
-        List<Question> listQuestions = questionService.findAll();
+        List<Question> listQuestions = questionRepo.findAll();
         if (listQuestions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -27,12 +27,12 @@ public class QuestionController {
 
     @RequestMapping(value = "/question/", method = RequestMethod.POST)
     public Question saveQuestion(Question question){
-        return questionService.save(question);
+        return questionRepo.save(question);
     }
 
     @RequestMapping(value = "/question/", method = RequestMethod.PUT)
     public ResponseEntity<Question> updateQuestion (@PathVariable(value = "id") Long questionId, @RequestBody Question questionForm){
-        Question question = questionService.getOne(questionId);
+        Question question = questionRepo.getOne(questionId);
         if (question == null){
             return ResponseEntity.notFound().build();
         }
@@ -42,17 +42,17 @@ public class QuestionController {
 
         question.setNum_like(questionForm.getNum_like());
 
-        Question updateQuestion = questionService.save(question);
+        Question updateQuestion = questionRepo.save(question);
         return ResponseEntity.ok(updateQuestion);
     }
 
     @RequestMapping(value = "/question/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Question> deleteQuestion(@PathVariable(value = "id") Long id){
-        Question question = questionService.getOne(id);
+        Question question = questionRepo.getOne(id);
         if(question == null){
             return ResponseEntity.notFound().build();
         }
-        questionService.delete(question);
+        questionRepo.delete(question);
         return ResponseEntity.ok().build();
     }
 }

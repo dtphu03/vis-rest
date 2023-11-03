@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Title;
-import vis.restsocial.service.TitleService;
+import vis.restsocial.service.TitleRepo;
 
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class TitleController {
     @Autowired
-    TitleService titleService;
+    TitleRepo titleRepo;
 
     @RequestMapping(value = "/title", method = RequestMethod.GET)
     public ResponseEntity<List<Title>> listAllTitle() {
-        List<Title> listTitles = titleService.findAll();
+        List<Title> listTitles = titleRepo.findAll();
         if (listTitles.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -28,29 +28,29 @@ public class TitleController {
 
     @RequestMapping(value = "/title/", method = RequestMethod.POST)
     public Title saveTitle(Title title){
-        return titleService.save(title);
+        return titleRepo.save(title);
     }
 
     @RequestMapping(value = "/title/", method = RequestMethod.PUT)
     public ResponseEntity<Title> updateTitle (@PathVariable(value = "id") Long titleId, @RequestBody Title titleForm){
-        Title title = titleService.getOne(titleId);
+        Title title = titleRepo.getOne(titleId);
         if (title == null){
             return ResponseEntity.notFound().build();
         }
         title.setName(titleForm.getName());
         title.setTopic_id(titleForm.getTopic_id());
 
-        Title updateTitle = titleService.save(title);
+        Title updateTitle = titleRepo.save(title);
         return ResponseEntity.ok(updateTitle);
     }
 
     @RequestMapping(value = "/title/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Title> deleteTitle(@PathVariable(value = "id") Long id){
-        Title title = titleService.getOne(id);
+        Title title = titleRepo.getOne(id);
         if(title == null){
             return ResponseEntity.notFound().build();
         }
-        titleService.delete(title);
+        titleRepo.delete(title);
         return ResponseEntity.ok().build();
     }
 }
