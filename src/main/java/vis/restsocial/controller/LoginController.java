@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Login;
-import vis.restsocial.service.LoginRepo;
+import vis.restsocial.repo.LoginRepo;
 
 import java.util.List;
 

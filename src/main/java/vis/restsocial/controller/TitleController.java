@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Title;
-import vis.restsocial.service.TitleRepo;
+import vis.restsocial.repo.TitleRepo;
 
 
 import java.util.List;

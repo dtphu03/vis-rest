@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vis.restsocial.model.Reply;
-import vis.restsocial.service.ReplyRepo;
+import vis.restsocial.repo.ReplyRepo;
 
 import java.util.List;
 
