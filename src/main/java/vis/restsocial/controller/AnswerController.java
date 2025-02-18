@@ -13,10 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class AnswerController {
-    @Autowired
     AnswerRepo answerRepo;
 
-    @RequestMapping(value = "/answer", method = RequestMethod.GET)
+    @GetMapping(value = "/answer")
     public ResponseEntity<List<Answer>> listAllAnswer() {
         List<Answer> listAnswers = answerRepo.findAll();
         if (listAnswers.isEmpty()) {
